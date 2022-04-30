@@ -1,25 +1,46 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { useState } from "react";
+import { motion, AnimateSharedLayout, AnimatePresence } from "framer-motion";
+import "./styles.css";
 
-function App() {
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AnimateSharedLayout>
+      <motion.ul layout initial={{ borderRadius: 25 }}>
+        {items.map((item) => (
+          <Item key={item} />
+        ))}
+      </motion.ul>
+    </AnimateSharedLayout>
   );
 }
 
-export default App;
+function Item() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleOpen = () => setIsOpen(!isOpen);
+
+  return (
+    <motion.li layout onClick={toggleOpen} initial={{ borderRadius: 10 }}>
+      <motion.div className="avatar" layout />
+      <AnimatePresence>{isOpen && <Content />}</AnimatePresence>
+    </motion.li>
+  );
+}
+
+function Content() {
+  return (
+    <motion.div
+      layout
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
+      <div className="row" />
+      <div className="row" />
+      <div className="row" />
+    </motion.div>
+  );
+}
+
+const items = [0, 1, 2];
